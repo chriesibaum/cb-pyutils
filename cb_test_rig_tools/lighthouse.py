@@ -1,27 +1,21 @@
 #!/usr/bin/env python3
 
 import sys
-from tabnanny import verbose
 import time
-import paho.mqtt.client as mqtt
+
 from busylight_core import KuandoLights
 from busylight_core.exceptions import NoLightsFoundError
 
 from key_stroke import KeyStroke
 
-# from test_config import TestRigStatusColor as tsc
 from cb_test_rig import TestRigStatusClient
 from cb_test_rig import TestRigStatus
 from cb_test_rig import TestRigConfig
 
-
-
 cfg = TestRigConfig(test_name = 'cb_test_rig_lighthouse')
-
-
+cfg.read_config()
 
 verbose = False  # Set to True to enable verbose output
-
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -73,7 +67,6 @@ def main():
                                verbose=verbose)
 
     cbtc.mqtt_client.user_data_set(status)
-
 
     k = KeyStroke()
     print('Press ESC to terminate!')
