@@ -1,2 +1,5 @@
 
 .venv/
+
+test_rig.conf
+*.log
