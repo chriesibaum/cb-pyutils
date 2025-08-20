@@ -44,12 +44,16 @@ class TestRigStatusClient():
             if self.verbose:
                 print(f'Received message {msg.topic}: {msg.payload}')
 
-            if self.on_message_callback:
-                self.on_message_callback(client, userdata, msg)
-
         mqttc = client.Client(client.CallbackAPIVersion.VERSION2)
         mqttc.on_connect = on_connect
-        mqttc.on_message = on_message
+
+        # connect the on_message callback
+        if self.on_message_callback is not None:
+            mqttc.on_message = self.on_message_callback
+        else:
+            mqttc.on_message = on_message
+
+        # finally connect to the MQTT broker
         mqttc.connect(self.cfg.mqtt_broker, self.cfg.mqtt_broker_port)
 
         return mqttc
